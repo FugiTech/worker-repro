@@ -1,0 +1,13 @@
+name = "worker"
+main = "./index.mjs"
+compatibility_date = "2023-05-18"
+
+[durable_objects]
+bindings = [
+  {name = "MANAGER", class_name = "Manager"},
+  {name = "SHARD", class_name = "Shard"},
+]
+
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["Manager", "Shard"]

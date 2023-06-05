@@ -1,0 +1,16 @@
+{
+  "name": "realtime",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsup --watch",
+    "wrangler": "wrangler dev --config dist/wrangler.toml --no-bundle",
+    "build": "tsup"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230518.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.1.3",
+    "wrangler": "^3.0.1"
+  }
+}

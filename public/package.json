@@ -1,0 +1,9 @@
+{
+  "name": "realtime",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {},
+  "engines": {
+    "node": ">=18"
+  }
+}
