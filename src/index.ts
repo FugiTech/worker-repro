@@ -3,6 +3,51 @@
 export { Manager } from './manager'
 export { Shard } from './shard'
 
+const HTML = `
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Worker Repro</title>
+  </head>
+  <body>
+    <button id="publish">Send Message</button>
+    <hr />
+    <h3>Message Log</h3>
+    <pre id="log"></pre>
+    <script>
+      document.getElementById('publish').addEventListener('click', () => {
+        fetch('http://localhost:8787/publish', {
+          method: 'POST',
+          body: JSON.stringify({
+            cluster: 'test',
+            room: 'test',
+            data: { a: 1, b: '2', rng: Math.random() },
+          }),
+        })
+      })
+
+      const log = document.getElementById('log')
+      const ws = new WebSocket('ws://localhost:8787/')
+      ws.addEventListener('open', (e) => {
+        log.innerText += \`websocket open\\n\`
+        ws.send(
+          JSON.stringify({ event: 'subscribe', cluster: 'test', room: 'test' }),
+        )
+      })
+      ws.addEventListener('message', (e) => {
+        log.innerText += \`\${e.data}\\n\`
+      })
+      ws.addEventListener('close', (e) => {
+        log.innerText += \`websocket close\\n\`
+      })
+      ws.addEventListener('error', (e) => {
+        log.innerText += \`websocket error\\n\`
+      })
+    </script>
+  </body>
+</html>
+`
+
 export default {
   async fetch(request: Request, env: Env) {
     try {
@@ -15,6 +60,10 @@ export default {
         request.headers.get('Upgrade') === 'websocket'
       ) {
         return await subscribe(request, env)
+      } else if (request.method === 'GET' && url.pathname === '/') {
+        return new Response(HTML, {
+          headers: { 'Content-Type': 'text/html;charset=UTF-8' },
+        })
       } else {
         return new Response('Not found', { status: 404 })
       }
