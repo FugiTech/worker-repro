@@ -1,6 +1,9 @@
 name = "worker"
-main = "./index.mjs"
+main = "./dist/index.mjs"
 compatibility_date = "2023-05-18"
+
+[build]
+command = "pnpm run build"
 
 [durable_objects]
 bindings = [

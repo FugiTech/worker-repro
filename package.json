@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "tsup --watch",
-    "wrangler": "wrangler dev --config dist/wrangler.toml --no-bundle",
+    "dev": "wrangler dev",
     "build": "tsup"
   },
   "devDependencies": {
